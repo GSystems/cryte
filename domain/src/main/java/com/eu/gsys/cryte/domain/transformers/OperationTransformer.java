@@ -27,7 +27,7 @@ public class OperationTransformer {
 		return operationEntity;
 	}
 
-	public static Iterable<Operation> toOperationListFromEntity(Iterable<OperationEntity> operationEntities) {
+	public static List<Operation> toOperationListFromEntity(Iterable<OperationEntity> operationEntities) {
 		List<Operation> operationList = new ArrayList<>();
 
 		for (OperationEntity entity : operationEntities) {

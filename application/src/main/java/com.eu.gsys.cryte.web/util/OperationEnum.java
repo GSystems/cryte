@@ -1,14 +1,13 @@
 package com.eu.gsys.cryte.web.util;
 
-public enum CoinEnum {
+public enum OperationEnum {
 
-	EURO("EUR"),
-	BITCOIN("XBT"),
-	ETHEREUM("ETH");
+	BUY("B"),
+	SELL("S");
 
 	private String code;
 
-	CoinEnum(String code) {
+	OperationEnum(String code) {
 		this.code = code;
 	}
 

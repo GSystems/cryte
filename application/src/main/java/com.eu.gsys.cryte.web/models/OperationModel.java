@@ -5,7 +5,6 @@ import java.time.LocalDate;
 public class OperationModel {
 
 	private Long id;
-	private String coinName;
 	private String coinId;
 	private Double coinPrice;
 	private Double coinQty;
@@ -14,10 +13,9 @@ public class OperationModel {
 	private Double feePerc;
 	private Double minimumWithdrawalCoinPrice;
 	private LocalDate date;
-	private Boolean isBuy;
-	private Boolean isSell;
 	private String currency;
 	private Double currencyPrice;
+	private String operationType;
 
 	public Long getId() {
 		return id;
@@ -25,14 +23,6 @@ public class OperationModel {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getCoinName() {
-		return coinName;
-	}
-
-	public void setCoinName(String coinName) {
-		this.coinName = coinName;
 	}
 
 	public String getCoinId() {
@@ -99,22 +89,6 @@ public class OperationModel {
 		this.date = date;
 	}
 
-	public Boolean getBuy() {
-		return isBuy;
-	}
-
-	public void setBuy(Boolean buy) {
-		isBuy = buy;
-	}
-
-	public Boolean getSell() {
-		return isSell;
-	}
-
-	public void setSell(Boolean sell) {
-		isSell = sell;
-	}
-
 	public String getCurrency() {
 		return currency;
 	}
@@ -129,5 +103,13 @@ public class OperationModel {
 
 	public void setCurrencyPrice(Double currencyPrice) {
 		this.currencyPrice = currencyPrice;
+	}
+
+	public String getOperationType() {
+		return operationType;
+	}
+
+	public void setOperationType(String operationType) {
+		this.operationType = operationType;
 	}
 }

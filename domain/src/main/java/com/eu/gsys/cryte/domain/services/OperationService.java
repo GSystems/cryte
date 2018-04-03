@@ -7,5 +7,4 @@ public interface OperationService {
 	Operation saveOperation(Operation operation);
 	Iterable<Operation> listAllOperations();
 	Operation getOperationById(Integer id);
-	void deleteOperation(Integer id);
 }

@@ -37,11 +37,6 @@ public class OperationServiceImpl implements OperationService {
 		return OperationTransformer.toOperationFromEntity(operationRepository.findById(id).get());
 	}
 
-	@Override
-	public void deleteOperation(Integer id) {
-		operationRepository.deleteById(id);
-	}
-
 	protected Operation prepareOperationForSave(Operation operation) {
 		Operation operationForSave = operation;
 
