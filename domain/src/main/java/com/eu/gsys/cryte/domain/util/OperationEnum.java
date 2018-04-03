@@ -1,4 +1,4 @@
-package com.eu.gsys.cryte.web.util;
+package com.eu.gsys.cryte.domain.util;
 
 public enum OperationEnum {
 

@@ -1,30 +1,25 @@
-package com.eu.gsys.infrastructure.entities;
+package com.eu.gsys.cryte.domain.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.eu.gsys.cryte.domain.util.OperationEnum;
+
 import java.time.LocalDate;
+import java.util.Objects;
 
-@Entity
-public class OperationEntity {
+public class BuySellOperation {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String coinName;
 	private String coinId;
 	private Double coinPrice;
 	private Double coinQty;
 	private Double operationCtv;
-	private Double feeCtv;
 	private Double feePerc;
+	private Double feeCtv;
 	private Double minimumWithdrawalCoinPrice;
 	private LocalDate date;
-	private Boolean isBuy;
-	private Boolean isSell;
 	private String currency;
 	private Double currencyPrice;
+	private OperationEnum operationType;
 
 	public Long getId() {
 		return id;
@@ -106,22 +101,6 @@ public class OperationEntity {
 		this.date = date;
 	}
 
-	public Boolean getBuy() {
-		return isBuy;
-	}
-
-	public void setBuy(Boolean buy) {
-		isBuy = buy;
-	}
-
-	public Boolean getSell() {
-		return isSell;
-	}
-
-	public void setSell(Boolean sell) {
-		isSell = sell;
-	}
-
 	public String getCurrency() {
 		return currency;
 	}
@@ -136,5 +115,39 @@ public class OperationEntity {
 
 	public void setCurrencyPrice(Double currencyPrice) {
 		this.currencyPrice = currencyPrice;
+	}
+
+	public OperationEnum getOperationType() {
+		return operationType;
+	}
+
+	public void setOperationType(OperationEnum operationType) {
+		this.operationType = operationType;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		BuySellOperation that = (BuySellOperation) o;
+		return Objects.equals(id, that.id) &&
+				Objects.equals(coinName, that.coinName) &&
+				Objects.equals(coinId, that.coinId) &&
+				Objects.equals(coinPrice, that.coinPrice) &&
+				Objects.equals(coinQty, that.coinQty) &&
+				Objects.equals(operationCtv, that.operationCtv) &&
+				Objects.equals(feePerc, that.feePerc) &&
+				Objects.equals(feeCtv, that.feeCtv) &&
+				Objects.equals(minimumWithdrawalCoinPrice, that.minimumWithdrawalCoinPrice) &&
+				Objects.equals(date, that.date) &&
+				Objects.equals(currency, that.currency) &&
+				Objects.equals(currencyPrice, that.currencyPrice) &&
+				operationType == that.operationType;
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(id, coinName, coinId, coinPrice, coinQty, operationCtv, feePerc, feeCtv, minimumWithdrawalCoinPrice, date, currency, currencyPrice, operationType);
 	}
 }

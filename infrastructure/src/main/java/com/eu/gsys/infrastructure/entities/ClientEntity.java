@@ -1,13 +1,11 @@
 package com.eu.gsys.infrastructure.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class ClientEntity {
+public class ClientEntity implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +15,12 @@ public class ClientEntity {
 	private String email;
 	private Double payedFeesCtv;
 	private Double profitCtv;
+
+	@OneToMany
 	private List<DepositEntity> deposits;
-	private List<OperationEntity> operations;
+
+	@OneToMany
+	private List<BuySellOperationEntity> operations;
 
 	public Integer getId() {
 		return id;
@@ -76,11 +78,11 @@ public class ClientEntity {
 		this.deposits = deposits;
 	}
 
-	public List<OperationEntity> getOperations() {
+	public List<BuySellOperationEntity> getOperations() {
 		return operations;
 	}
 
-	public void setOperations(List<OperationEntity> operations) {
+	public void setOperations(List<BuySellOperationEntity> operations) {
 		this.operations = operations;
 	}
 }

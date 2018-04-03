@@ -1,6 +1,6 @@
-package com.eu.gsys.cryte.web.util;
+package com.eu.gsys.cryte.domain.util;
 
-public enum CoinEnum {
+public enum CoinType {
 
 	EURO("EUR"),
 	BITCOIN("XBT"),
@@ -8,7 +8,7 @@ public enum CoinEnum {
 
 	private String code;
 
-	CoinEnum(String code) {
+	CoinType(String code) {
 		this.code = code;
 	}
 

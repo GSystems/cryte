@@ -1,9 +1,11 @@
 package com.eu.gsys.cryte.domain.models;
 
+import com.eu.gsys.cryte.domain.util.CoinType;
+
 public class Deposit {
 
 	private Integer id;
-	private String coinId;
+	private CoinType coinId;
 	private String coinName;
 	private Double ctv;
 
@@ -15,11 +17,11 @@ public class Deposit {
 		this.id = id;
 	}
 
-	public String getCoinId() {
+	public CoinType getCoinId() {
 		return coinId;
 	}
 
-	public void setCoinId(String coinId) {
+	public void setCoinId(CoinType coinId) {
 		this.coinId = coinId;
 	}
 

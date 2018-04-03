@@ -1,10 +1,19 @@
-package com.eu.gsys.cryte.web.models;
+package com.eu.gsys.infrastructure.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class OperationModel {
+@Entity
+public class BuySellOperationEntity implements Serializable {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private String coinName;
 	private String coinId;
 	private Double coinPrice;
 	private Double coinQty;
@@ -23,6 +32,14 @@ public class OperationModel {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getCoinName() {
+		return coinName;
+	}
+
+	public void setCoinName(String coinName) {
+		this.coinName = coinName;
 	}
 
 	public String getCoinId() {

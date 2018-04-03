@@ -1,7 +1,7 @@
 package com.eu.gsys.cryte.domain.services;
 
+import com.eu.gsys.cryte.domain.models.BuySellOperation;
 import com.eu.gsys.cryte.domain.models.Client;
-import com.eu.gsys.cryte.domain.models.Operation;
 
 public interface ClientService {
 
@@ -9,4 +9,6 @@ public interface ClientService {
 	Iterable<Client> listAllClients();
 	Client getClientById(Integer id);
 	void deleteClient(Integer id);
+
+	void addOperation(Client client, BuySellOperation buySellOperation);
 }
