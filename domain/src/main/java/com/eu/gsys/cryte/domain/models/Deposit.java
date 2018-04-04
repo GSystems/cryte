@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Deposit {
 
 	private Integer id;
-	private CoinType coinId;
+	private String coinId;
 	private String coinName;
 	private Double ctv;
 
@@ -19,11 +19,11 @@ public class Deposit {
 		this.id = id;
 	}
 
-	public CoinType getCoinId() {
+	public String getCoinId() {
 		return coinId;
 	}
 
-	public void setCoinId(CoinType coinId) {
+	public void setCoinId(String coinId) {
 		this.coinId = coinId;
 	}
 

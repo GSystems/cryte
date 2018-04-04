@@ -41,11 +41,11 @@ public class CryteTransformer {
 		return client;
 	}
 
-	private static Map<CoinType,Deposit> fromDepositListToMap(List<DepositEntity> deposits) {
-		Map<CoinType,Deposit> depositMap = new HashMap<>();
+	private static Map<String,Deposit> fromDepositListToMap(List<DepositEntity> deposits) {
+		Map<String,Deposit> depositMap = new HashMap<>();
 
 		for (DepositEntity depositEntity : deposits) {
-			depositMap.put(CoinType.valueOf(depositEntity.getCoinId()), toDepositFromEntity(depositEntity));
+			depositMap.put(depositEntity.getCoinId(), toDepositFromEntity(depositEntity));
 		}
 
 		return depositMap;

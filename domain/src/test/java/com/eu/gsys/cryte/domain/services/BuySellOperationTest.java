@@ -26,16 +26,19 @@ public class BuySellOperationTest {
 	private ClientServiceImpl clientServiceMock;
 
 	private Client client;
-	private Map<CoinType, Deposit> depositMap;
+	private Map<String, Deposit> depositMap;
 	private List<BuySellOperation> buySellOperations;
-	private BuySellOperation processedOperation;
+	private BuySellOperation processedBuyOperation;
+	private BuySellOperation processedSellOperation;
 
 	@Before
 	public void prepareData() {
 		buySellOperations = generateBuySellOperations();
 		depositMap = generateDeposits();
 		client = generateClient();
-		processedOperation = clientServiceMock.calculatePricesAndFee(buySellOperations.get(0));
+		client.setDeposits(depositMap);
+		processedBuyOperation = clientServiceMock.calculatePricesAndFee(buySellOperations.get(0));
+		processedSellOperation = clientServiceMock.calculatePricesAndFee(buySellOperations.get(2));
 	}
 
 	@Test
@@ -46,23 +49,30 @@ public class BuySellOperationTest {
 		assertEquals(expectedBuySellOperations.get(1), clientServiceMock.calculatePricesAndFee(buySellOperations.get(1)));
 	}
 
-//	Deposit deposit = updateDeposit(client, buySellOperation);
-//		client.getDeposits().replace(deposit.getCoinId(), deposit);
-//
-//	Double totalFeesCtv = calculateTotalFeeCtv(client, buySellOperation);
-//		client.setPayedFeesCtv(totalFeesCtv);
-//
-//	Double profit = calculateProfit(client, buySellOperation);
-//		client.setProfitCtv(profit);
-
 	@Test
 	public void updateDepositTest() {
-		Deposit expectedDeposit = client.getDeposits().get(1);
+		Deposit expectedDeposit = depositMap.get(CoinType.ETHEREUM.getCode());
 		expectedDeposit.setCtv(208.95);
 
-		Deposit actualDeposit = clientServiceMock.updateDeposit(client, processedOperation);
+		Deposit actualDeposit = clientServiceMock.updateDeposit(client, processedBuyOperation);
 
 		assertEquals(expectedDeposit, actualDeposit);
+	}
+
+	@Test
+	public void calculateProfitForBuyTest() {
+		Double expectedValue = 0.0;
+		Double actualValue = clientServiceMock.calculateProfit(client, processedBuyOperation);
+
+		assertEquals(expectedValue, actualValue, 0);
+	}
+
+	@Test
+	public void calculateProfitForSellTest() {
+		Double expectedValue = 0.0;
+		Double actualValue = clientServiceMock.calculateProfit(client, processedSellOperation);
+
+		assertEquals(expectedValue, actualValue, 0);
 	}
 
 	@Test
@@ -70,24 +80,24 @@ public class BuySellOperationTest {
 
 		Client expectedClient = client;
 
-		Client actualClient = clientServiceMock.processOperation(client, processedOperation);
+		Client actualClient = clientServiceMock.processOperation(client, processedBuyOperation);
 	}
 
 	@Test
 	public void calculateTotalFeeCtvTest() {
 		Double expectedValue = 0.54;
-		Double actualValue = clientServiceMock.calculateTotalFeeCtv(client, processedOperation);
+		Double actualValue = clientServiceMock.calculateTotalFeeCtv(client, processedBuyOperation);
 
 		assertEquals(expectedValue, actualValue);
 	}
 
-	private Map<CoinType, Deposit> generateDeposits() {
-		Map<CoinType, Deposit> depositMap = new HashMap<>();
+	private Map<String, Deposit> generateDeposits() {
+		Map<String, Deposit> depositMap = new HashMap<>();
 
 		Deposit deposit0 = new Deposit();
 
 		deposit0.setCtv(100.0);
-		deposit0.setCoinId(CoinType.EURO);
+		deposit0.setCoinId(CoinType.EURO.getCode());
 		deposit0.setCoinName(CoinType.EURO.name());
 		deposit0.setId(1);
 
@@ -95,10 +105,10 @@ public class BuySellOperationTest {
 
 		Deposit deposit1 = new Deposit();
 
-		deposit0.setCtv(0.0);
-		deposit0.setCoinId(CoinType.ETHEREUM);
-		deposit0.setCoinName(CoinType.ETHEREUM.name());
-		deposit0.setId(2);
+		deposit1.setCtv(0.0);
+		deposit1.setCoinId(CoinType.ETHEREUM.getCode());
+		deposit1.setCoinName(CoinType.ETHEREUM.name());
+		deposit1.setId(2);
 
 		depositMap.put(deposit1.getCoinId(), deposit1);
 
@@ -138,6 +148,7 @@ public class BuySellOperationTest {
 		List<BuySellOperation> buySellOperations = new ArrayList<>();
 		BuySellOperation buySellOperation0 = new BuySellOperation();
 		BuySellOperation buySellOperation1 = new BuySellOperation();
+		BuySellOperation buySellOperation2 = new BuySellOperation();
 
 		buySellOperation0.setCoinId("ETH");
 		buySellOperation0.setCoinQty(0.65);
@@ -153,8 +164,16 @@ public class BuySellOperationTest {
 		buySellOperation1.setOperationCtv(199.88);
 		buySellOperation1.setOperationType(OperationEnum.BUY);
 
+		buySellOperation1.setCoinId("ETH");
+		buySellOperation1.setCoinQty(0.1);
+		buySellOperation1.setDate(LocalDate.now());
+		buySellOperation1.setId(3L);
+		buySellOperation1.setOperationCtv(20.89);
+		buySellOperation1.setOperationType(OperationEnum.SELL);
+
 		buySellOperations.add(buySellOperation0);
 		buySellOperations.add(buySellOperation1);
+		buySellOperations.add(buySellOperation2);
 
 		return buySellOperations;
 	}

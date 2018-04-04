@@ -99,7 +99,7 @@ public class ClientServiceImpl implements ClientService {
 
 	protected Deposit updateDeposit(Client client, BuySellOperation buySellOperation) {
 		Deposit deposit = client.getDeposits().get(buySellOperation.getCoinId());
-		deposit.setCtv(deposit.getCtv() + buySellOperation.getCoinQty());
+		deposit.setCtv(deposit.getCtv() + buySellOperation.getOperationCtv());
 
 		return deposit;
 	}

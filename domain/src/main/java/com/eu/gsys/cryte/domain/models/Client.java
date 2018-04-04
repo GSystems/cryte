@@ -13,7 +13,7 @@ public class Client {
 	private String email;
 	private Double payedFeesCtv;
 	private Double profitCtv;
-	private Map<CoinType, Deposit> deposits;
+	private Map<String, Deposit> deposits;
 	private List<BuySellOperation> buySellOperations;
 
 	public Integer getId() {
@@ -64,11 +64,11 @@ public class Client {
 		this.profitCtv = profitCtv;
 	}
 
-	public Map<CoinType, Deposit> getDeposits() {
+	public Map<String, Deposit> getDeposits() {
 		return deposits;
 	}
 
-	public void setDeposits(Map<CoinType, Deposit> deposits) {
+	public void setDeposits(Map<String, Deposit> deposits) {
 		this.deposits = deposits;
 	}
 
