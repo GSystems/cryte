@@ -1,11 +1,9 @@
 package com.eu.gsys.cryte.web.setup;
 
-import com.eu.gsys.cryte.domain.models.Client;
-import com.eu.gsys.cryte.domain.models.Deposit;
-import com.eu.gsys.cryte.domain.models.BuySellOperation;
+import com.eu.gsys.cryte.domain.models.*;
 import com.eu.gsys.cryte.domain.services.ClientService;
 import com.eu.gsys.cryte.domain.util.CoinType;
-import com.eu.gsys.cryte.domain.util.OperationEnum;
+import com.eu.gsys.cryte.domain.util.OperationType;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -45,15 +43,15 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 		clientService.saveClient(client);
 	}
 
-	private Map<CoinType, Deposit> generateDeposits() {
-		Map<CoinType, Deposit> deposits = new HashMap<>();
+	private Map<String, GenericDeposit> generateDeposits() {
+		Map<String, GenericDeposit> deposits = new HashMap<>();
 
-		Deposit eurDeposit = new Deposit();
-		eurDeposit.setCoinId(CoinType.EURO);
-		eurDeposit.setCoinName(CoinType.EURO.name());
-		eurDeposit.setCtv(100.0);
+		CurrencyDeposit eurCryptoDeposit = new CurrencyDeposit();
+		eurCryptoDeposit.setCoinId(CoinType.EURO.getCode());
+		eurCryptoDeposit.setCoinName(CoinType.EURO.name());
+		eurCryptoDeposit.setBalance(100.0);
 
-		deposits.put(CoinType.EURO, eurDeposit);
+		deposits.put(CoinType.EURO.getCode(), eurCryptoDeposit);
 
 		return deposits;
 	}
@@ -69,7 +67,7 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 		first.setOperationCtv(5700.0);
 		first.setCoinPrice(5700.0);
 		first.setDate(LocalDate.now());
-		first.setOperationType(OperationEnum.BUY);
+		first.setOperationType(OperationType.BUY);
 
 		BuySellOperation second = new BuySellOperation();
 
@@ -79,7 +77,7 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 		second.setOperationCtv(600.0);
 		second.setCoinPrice(1200.0);
 		second.setDate(LocalDate.now());
-		second.setOperationType(OperationEnum.BUY);
+		second.setOperationType(OperationType.BUY);
 
 		buySellOperations.add(first);
 		buySellOperations.add(second);

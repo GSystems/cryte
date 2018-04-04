@@ -1,6 +1,6 @@
 package com.eu.gsys.cryte.domain.models;
 
-import com.eu.gsys.cryte.domain.util.OperationEnum;
+import com.eu.gsys.cryte.domain.util.OperationType;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -19,7 +19,7 @@ public class BuySellOperation {
 	private LocalDate date;
 	private String currency;
 	private Double currencyPrice;
-	private OperationEnum operationType;
+	private OperationType operationType;
 
 	public Long getId() {
 		return id;
@@ -117,11 +117,11 @@ public class BuySellOperation {
 		this.currencyPrice = currencyPrice;
 	}
 
-	public OperationEnum getOperationType() {
+	public OperationType getOperationType() {
 		return operationType;
 	}
 
-	public void setOperationType(OperationEnum operationType) {
+	public void setOperationType(OperationType operationType) {
 		this.operationType = operationType;
 	}
 

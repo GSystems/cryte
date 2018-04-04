@@ -1,7 +1,5 @@
 package com.eu.gsys.cryte.domain.models;
 
-import com.eu.gsys.cryte.domain.util.CoinType;
-
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +11,7 @@ public class Client {
 	private String email;
 	private Double payedFeesCtv;
 	private Double profitCtv;
-	private Map<String, Deposit> deposits;
+	private Map<String, GenericDeposit> deposits;
 	private List<BuySellOperation> buySellOperations;
 
 	public Integer getId() {
@@ -64,11 +62,11 @@ public class Client {
 		this.profitCtv = profitCtv;
 	}
 
-	public Map<String, Deposit> getDeposits() {
+	public Map<String, GenericDeposit> getDeposits() {
 		return deposits;
 	}
 
-	public void setDeposits(Map<String, Deposit> deposits) {
+	public void setDeposits(Map<String, GenericDeposit> deposits) {
 		this.deposits = deposits;
 	}
 
