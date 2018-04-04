@@ -2,6 +2,8 @@ package com.eu.gsys.cryte.domain.models;
 
 import com.eu.gsys.cryte.domain.util.CoinType;
 
+import java.util.Objects;
+
 public class Deposit {
 
 	private Integer id;
@@ -39,5 +41,22 @@ public class Deposit {
 
 	public void setCtv(Double ctv) {
 		this.ctv = ctv;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Deposit deposit = (Deposit) o;
+		return Objects.equals(id, deposit.id) &&
+				coinId == deposit.coinId &&
+				Objects.equals(coinName, deposit.coinName) &&
+				Objects.equals(ctv, deposit.ctv);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(id, coinId, coinName, ctv);
 	}
 }

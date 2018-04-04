@@ -46,13 +46,31 @@ public class BuySellOperationTest {
 		assertEquals(expectedBuySellOperations.get(1), clientServiceMock.calculatePricesAndFee(buySellOperations.get(1)));
 	}
 
+//	Deposit deposit = updateDeposit(client, buySellOperation);
+//		client.getDeposits().replace(deposit.getCoinId(), deposit);
+//
+//	Double totalFeesCtv = calculateTotalFeeCtv(client, buySellOperation);
+//		client.setPayedFeesCtv(totalFeesCtv);
+//
+//	Double profit = calculateProfit(client, buySellOperation);
+//		client.setProfitCtv(profit);
+
+	@Test
+	public void updateDepositTest() {
+		Deposit expectedDeposit = client.getDeposits().get(1);
+		expectedDeposit.setCtv(208.95);
+
+		Deposit actualDeposit = clientServiceMock.updateDeposit(client, processedOperation);
+
+		assertEquals(expectedDeposit, actualDeposit);
+	}
+
 	@Test
 	public void processOperationTest() {
 
 		Client expectedClient = client;
 
-
-		Client updatedClient = clientServiceMock.processOperation(client, processedOperation);
+		Client actualClient = clientServiceMock.processOperation(client, processedOperation);
 	}
 
 	@Test
@@ -74,6 +92,16 @@ public class BuySellOperationTest {
 		deposit0.setId(1);
 
 		depositMap.put(deposit0.getCoinId(), deposit0);
+
+		Deposit deposit1 = new Deposit();
+
+		deposit0.setCtv(0.0);
+		deposit0.setCoinId(CoinType.ETHEREUM);
+		deposit0.setCoinName(CoinType.ETHEREUM.name());
+		deposit0.setId(2);
+
+		depositMap.put(deposit1.getCoinId(), deposit1);
+
 		return depositMap;
 	}
 
