@@ -1,15 +1,15 @@
 package com.eu.gsys.cryte.domain.models;
 
+import com.eu.gsys.cryte.domain.util.CoinType;
 import com.eu.gsys.cryte.domain.util.OperationType;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class BuySellOperation {
+public class Operation {
 
 	private Long id;
-	private String coinName;
-	private String coinId;
+	private CoinType coinType;
 	private Double coinPrice;
 	private Double coinQty;
 	private Double operationCtv;
@@ -29,20 +29,12 @@ public class BuySellOperation {
 		this.id = id;
 	}
 
-	public String getCoinName() {
-		return coinName;
+	public CoinType getCoinType() {
+		return coinType;
 	}
 
-	public void setCoinName(String coinName) {
-		this.coinName = coinName;
-	}
-
-	public String getCoinId() {
-		return coinId;
-	}
-
-	public void setCoinId(String coinId) {
-		this.coinId = coinId;
+	public void setCoinType(CoinType coinType) {
+		this.coinType = coinType;
 	}
 
 	public Double getCoinPrice() {
@@ -129,25 +121,24 @@ public class BuySellOperation {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		BuySellOperation that = (BuySellOperation) o;
-		return Objects.equals(id, that.id) &&
-				Objects.equals(coinName, that.coinName) &&
-				Objects.equals(coinId, that.coinId) &&
-				Objects.equals(coinPrice, that.coinPrice) &&
-				Objects.equals(coinQty, that.coinQty) &&
-				Objects.equals(operationCtv, that.operationCtv) &&
-				Objects.equals(feePerc, that.feePerc) &&
-				Objects.equals(feeCtv, that.feeCtv) &&
-				Objects.equals(minimumWithdrawalCoinPrice, that.minimumWithdrawalCoinPrice) &&
-				Objects.equals(date, that.date) &&
-				Objects.equals(currency, that.currency) &&
-				Objects.equals(currencyPrice, that.currencyPrice) &&
-				operationType == that.operationType;
+		Operation operation = (Operation) o;
+		return Objects.equals(id, operation.id) &&
+				coinType == operation.coinType &&
+				Objects.equals(coinPrice, operation.coinPrice) &&
+				Objects.equals(coinQty, operation.coinQty) &&
+				Objects.equals(operationCtv, operation.operationCtv) &&
+				Objects.equals(feePerc, operation.feePerc) &&
+				Objects.equals(feeCtv, operation.feeCtv) &&
+				Objects.equals(minimumWithdrawalCoinPrice, operation.minimumWithdrawalCoinPrice) &&
+				Objects.equals(date, operation.date) &&
+				Objects.equals(currency, operation.currency) &&
+				Objects.equals(currencyPrice, operation.currencyPrice) &&
+				operationType == operation.operationType;
 	}
 
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(id, coinName, coinId, coinPrice, coinQty, operationCtv, feePerc, feeCtv, minimumWithdrawalCoinPrice, date, currency, currencyPrice, operationType);
+		return Objects.hash(id, coinType, coinPrice, coinQty, operationCtv, feePerc, feeCtv, minimumWithdrawalCoinPrice, date, currency, currencyPrice, operationType);
 	}
 }

@@ -20,7 +20,7 @@ public class ClientEntity implements Serializable {
 	private List<DepositEntity> deposits;
 
 	@OneToMany
-	private List<BuySellOperationEntity> operations;
+	private List<OperationEntity> operations;
 
 	public Integer getId() {
 		return id;
@@ -78,11 +78,11 @@ public class ClientEntity implements Serializable {
 		this.deposits = deposits;
 	}
 
-	public List<BuySellOperationEntity> getOperations() {
+	public List<OperationEntity> getOperations() {
 		return operations;
 	}
 
-	public void setOperations(List<BuySellOperationEntity> operations) {
+	public void setOperations(List<OperationEntity> operations) {
 		this.operations = operations;
 	}
 }

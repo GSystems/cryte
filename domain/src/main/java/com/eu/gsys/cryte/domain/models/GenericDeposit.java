@@ -1,10 +1,13 @@
 package com.eu.gsys.cryte.domain.models;
 
+import com.eu.gsys.cryte.domain.util.CoinType;
+
+import java.util.Objects;
+
 public class GenericDeposit {
 
 	private Integer id;
-	private String coinId;
-	private String coinName;
+	private CoinType coinType;
 
 	public Integer getId() {
 		return id;
@@ -14,19 +17,26 @@ public class GenericDeposit {
 		this.id = id;
 	}
 
-	public String getCoinId() {
-		return coinId;
+	public CoinType getCoinType() {
+		return coinType;
 	}
 
-	public void setCoinId(String coinId) {
-		this.coinId = coinId;
+	public void setCoinType(CoinType coinType) {
+		this.coinType = coinType;
 	}
 
-	public String getCoinName() {
-		return coinName;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		GenericDeposit that = (GenericDeposit) o;
+		return Objects.equals(id, that.id) &&
+				coinType == that.coinType;
 	}
 
-	public void setCoinName(String coinName) {
-		this.coinName = coinName;
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(id, coinType);
 	}
 }

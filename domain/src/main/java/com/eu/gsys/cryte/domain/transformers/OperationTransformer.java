@@ -1,58 +1,58 @@
 package com.eu.gsys.cryte.domain.transformers;
 
-import com.eu.gsys.cryte.domain.models.BuySellOperation;
+import com.eu.gsys.cryte.domain.models.Operation;
+import com.eu.gsys.cryte.domain.util.CoinType;
 import com.eu.gsys.cryte.domain.util.OperationType;
-import com.eu.gsys.infrastructure.entities.BuySellOperationEntity;
+import com.eu.gsys.infrastructure.entities.OperationEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OperationTransformer {
 
-	public static BuySellOperationEntity fromBuySellOperationToEntity(BuySellOperation buySellOperation) {
-		BuySellOperationEntity buySellOperationEntity = new BuySellOperationEntity();
+	public static OperationEntity fromOperationToEntity(Operation operation) {
+		OperationEntity operationEntity = new OperationEntity();
 
-		buySellOperationEntity.setId(buySellOperation.getId());
-		buySellOperationEntity.setDate(buySellOperation.getDate());
-		buySellOperationEntity.setCoinQty(buySellOperation.getCoinQty());
-		buySellOperationEntity.setCoinName(buySellOperation.getCoinName());
-		buySellOperationEntity.setCoinId(buySellOperation.getCoinId());
-		buySellOperationEntity.setFeePerc(buySellOperation.getFeePerc());
-		buySellOperationEntity.setFeeCtv(buySellOperation.getFeeCtv());
-		buySellOperationEntity.setMinimumWithdrawalCoinPrice(buySellOperation.getMinimumWithdrawalCoinPrice());
-		buySellOperationEntity.setOperationCtv(buySellOperation.getOperationCtv());
-		buySellOperationEntity.setCoinPrice(buySellOperation.getCoinPrice());
-		buySellOperationEntity.setOperationType(buySellOperation.getOperationType().getCode());
+		operationEntity.setId(operation.getId());
+		operationEntity.setDate(operation.getDate());
+		operationEntity.setCoinQty(operation.getCoinQty());
+		operationEntity.setCoinName(operation.getCoinType().name());
+		operationEntity.setCoinId(operation.getCoinType().getCode());
+		operationEntity.setFeePerc(operation.getFeePerc());
+		operationEntity.setFeeCtv(operation.getFeeCtv());
+		operationEntity.setMinimumWithdrawalCoinPrice(operation.getMinimumWithdrawalCoinPrice());
+		operationEntity.setOperationCtv(operation.getOperationCtv());
+		operationEntity.setCoinPrice(operation.getCoinPrice());
+		operationEntity.setOperationType(operation.getOperationType().getCode());
 
-		return buySellOperationEntity;
+		return operationEntity;
 	}
 
-	public static List<BuySellOperation> toBuySellOperationListFromEntity(
-			Iterable<BuySellOperationEntity> operationEntities) {
-		List<BuySellOperation> buySellOperationList = new ArrayList<>();
+	public static List<Operation> toOperationListFromEntity(
+			Iterable<OperationEntity> operationEntities) {
+		List<Operation> operationList = new ArrayList<>();
 
-		for (BuySellOperationEntity entity : operationEntities) {
-			buySellOperationList.add(toBuySellOperationFromEntity(entity));
+		for (OperationEntity entity : operationEntities) {
+			operationList.add(toOperationFromEntity(entity));
 		}
 
-		return buySellOperationList;
+		return operationList;
 	}
 
-	public static BuySellOperation toBuySellOperationFromEntity(BuySellOperationEntity buySellOperationEntity) {
-		BuySellOperation buySellOperation = new BuySellOperation();
+	public static Operation toOperationFromEntity(OperationEntity operationEntity) {
+		Operation operation = new Operation();
 
-		buySellOperation.setId(buySellOperationEntity.getId());
-		buySellOperation.setDate(buySellOperationEntity.getDate());
-		buySellOperation.setCoinQty(buySellOperationEntity.getCoinQty());
-		buySellOperation.setCoinName(buySellOperationEntity.getCoinName());
-		buySellOperation.setCoinId(buySellOperationEntity.getCoinId());
-		buySellOperation.setFeePerc(buySellOperationEntity.getFeePerc());
-		buySellOperation.setFeeCtv(buySellOperationEntity.getFeeCtv());
-		buySellOperation.setMinimumWithdrawalCoinPrice(buySellOperationEntity.getMinimumWithdrawalCoinPrice());
-		buySellOperation.setOperationCtv(buySellOperationEntity.getOperationCtv());
-		buySellOperation.setCoinPrice(buySellOperationEntity.getCoinPrice());
-		buySellOperation.setOperationType(OperationType.valueOf(buySellOperationEntity.getOperationType()));
+		operation.setId(operationEntity.getId());
+		operation.setDate(operationEntity.getDate());
+		operation.setCoinQty(operationEntity.getCoinQty());
+		operation.setCoinType(CoinType.valueOf(operationEntity.getCoinName()));
+		operation.setFeePerc(operationEntity.getFeePerc());
+		operation.setFeeCtv(operationEntity.getFeeCtv());
+		operation.setMinimumWithdrawalCoinPrice(operationEntity.getMinimumWithdrawalCoinPrice());
+		operation.setOperationCtv(operationEntity.getOperationCtv());
+		operation.setCoinPrice(operationEntity.getCoinPrice());
+		operation.setOperationType(OperationType.valueOf(operationEntity.getOperationType()));
 
-		return buySellOperation;
+		return operation;
 	}
 }

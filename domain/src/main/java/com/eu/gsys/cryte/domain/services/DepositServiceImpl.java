@@ -8,6 +8,7 @@ import com.eu.gsys.infrastructure.repositories.DepositRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -41,43 +42,63 @@ public class DepositServiceImpl implements DepositService {
 		depositRepository.deleteById(id);
 	}
 
-	public GenericDeposit updateDeposit(Client client, BuySellOperation buySellOperation) {
+	@Override
+	public GenericDeposit updateDeposit(Client client, Operation operation) {
 
-		GenericDeposit deposit = client.getDeposits().get(buySellOperation.getCoinId());
+		GenericDeposit deposit;
 
-		if (CoinType.EURO.getCode().equals(buySellOperation.getCoinId())) {
-			deposit = updateCurrencyDeposit(client, buySellOperation);
+		if (CoinType.EURO.getCode().equals(operation.getCoinType())) {
+			deposit = updateCurrencyDeposit(client, operation);
 		} else {
-			deposit = updateCryptoDeposit(client, buySellOperation);
+			deposit = updateCryptoDeposit(client, operation);
 		}
 
 		return deposit;
 	}
 
-	private CurrencyDeposit updateCurrencyDeposit(Client client, BuySellOperation buySellOperation) {
-		CurrencyDeposit deposit = (CurrencyDeposit) client.getDeposits().get(buySellOperation.getCoinId());
+	private CurrencyDeposit updateCurrencyDeposit(Client client, Operation operation) {
+		CurrencyDeposit deposit = (CurrencyDeposit) client.getDeposits().get(operation.getCoinType());
 
 
 		return deposit;
 	}
 
-	private CryptoDeposit updateCryptoDeposit(Client client, BuySellOperation buySellOperation) {
-		CryptoDeposit deposit = (CryptoDeposit) client.getDeposits().get(buySellOperation.getCoinId());
-		Map<Double, Double> pricePerCryptoQtyMap = deposit.getPricePerCryptoQty();
+	private CryptoDeposit updateCryptoDeposit(Client client, Operation operation) {
 
-		Double coinPrice = buySellOperation.getCoinPrice();
-		Double coinQty = buySellOperation.getCoinQty();
+		CryptoDeposit deposit = (CryptoDeposit) client.getDeposits().get(operation.getCoinType());
+		Map<Double, Double> pricePerCryptoQtyMap = new HashMap<>();
+
+		if (deposit.getPricePerCryptoQty() != null) {
+			pricePerCryptoQtyMap = deposit.getPricePerCryptoQty();
+		}
+
+		Double coinPrice = operation.getCoinPrice();
+		Double coinQty = operation.getCoinQty();
 		Double qtyForSave = 0.0;
 
-		if (OperationType.BUY.getCode().equals(buySellOperation.getOperationType())) {
-			qtyForSave = updateCryptoDepositForBuy(pricePerCryptoQtyMap, coinPrice, coinQty);
-			pricePerCryptoQtyMap.put(coinPrice, qtyForSave);
-		} else if (OperationType.SELL.getCode().equals(buySellOperation.getOperationType())){
-			updateCryptoDepositForSell(pricePerCryptoQtyMap, coinPrice, coinQty);
+		qtyForSave = calculateQtyForSave(operation, pricePerCryptoQtyMap, coinPrice, coinQty);
 
+		if (qtyForSave > 0.0) {
+			pricePerCryptoQtyMap.put(coinPrice, qtyForSave);
+		} else {
+			pricePerCryptoQtyMap.remove(coinPrice);
 		}
 
+		deposit.setPricePerCryptoQty(pricePerCryptoQtyMap);
+
 		return deposit;
+	}
+
+	private Double calculateQtyForSave(Operation operation, Map<Double, Double> pricePerCryptoQtyMap, Double coinPrice, Double coinQty) {
+		Double qtyForSave = 0.0;
+
+		if (OperationType.BUY.equals(operation.getOperationType())) {
+			qtyForSave = updateCryptoDepositForBuy(pricePerCryptoQtyMap, coinPrice, coinQty);
+		} else if (OperationType.SELL.equals(operation.getOperationType())) {
+			qtyForSave = updateCryptoDepositForSell(pricePerCryptoQtyMap, coinPrice, coinQty);
+		}
+
+		return qtyForSave;
 	}
 
 	private Double updateCryptoDepositForBuy(Map<Double, Double> pricePerCryptoQtyMap, Double coinPrice, Double coinQty) {
@@ -94,7 +115,6 @@ public class DepositServiceImpl implements DepositService {
 
 		Double qtyForSave = 0.0;
 		Double oldQty = searchForOldQty(pricePerCryptoQtyMap, coinPrice);
-
 		if (oldQty <= 0) {
 			qtyForSave = coinQty;
 		} else {

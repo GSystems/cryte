@@ -2,6 +2,7 @@ package com.eu.gsys.cryte.domain.transformers;
 
 import com.eu.gsys.cryte.domain.models.CryptoDeposit;
 import com.eu.gsys.cryte.domain.models.GenericDeposit;
+import com.eu.gsys.cryte.domain.util.CoinType;
 import com.eu.gsys.infrastructure.entities.DepositEntity;
 
 import java.util.ArrayList;
@@ -11,11 +12,11 @@ import java.util.Map;
 
 public class DepositTransformer {
 
-	public static Map<String, GenericDeposit> fromDepositListToMap(List<DepositEntity> deposits) {
-		Map<String, GenericDeposit> depositMap = new HashMap<>();
+	public static Map<CoinType, GenericDeposit> fromDepositListToMap(List<DepositEntity> deposits) {
+		Map<CoinType, GenericDeposit> depositMap = new HashMap<>();
 
 		for (DepositEntity depositEntity : deposits) {
-			depositMap.put(depositEntity.getCoinId(), toDepositFromEntity(depositEntity));
+			depositMap.put(CoinType.valueOf(depositEntity.getCoinId()), toDepositFromEntity(depositEntity));
 		}
 
 		return depositMap;

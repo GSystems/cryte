@@ -38,51 +38,50 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 		client.setPayedFeesCtv(0.0);
 		client.setProfitCtv(0.0);
 		client.setDeposits(generateDeposits());
-		client.setBuySellOperations(generateBuySellOperations());
+		client.setOperations(generateBuySellOperations());
 
 		clientService.saveClient(client);
 	}
 
-	private Map<String, GenericDeposit> generateDeposits() {
-		Map<String, GenericDeposit> deposits = new HashMap<>();
+	private Map<CoinType, GenericDeposit> generateDeposits() {
+		Map<CoinType, GenericDeposit> deposits = new HashMap<>();
 
 		CurrencyDeposit eurCryptoDeposit = new CurrencyDeposit();
-		eurCryptoDeposit.setCoinId(CoinType.EURO.getCode());
-		eurCryptoDeposit.setCoinName(CoinType.EURO.name());
+		eurCryptoDeposit.setCoinType(CoinType.EURO);
 		eurCryptoDeposit.setBalance(100.0);
 
-		deposits.put(CoinType.EURO.getCode(), eurCryptoDeposit);
+		deposits.put(CoinType.EURO, eurCryptoDeposit);
 
 		return deposits;
 	}
 
-	private List<BuySellOperation> generateBuySellOperations() {
-		List<BuySellOperation> buySellOperations = new ArrayList<>();
+	private List<Operation> generateBuySellOperations() {
+		List<Operation> operations = new ArrayList<>();
 
-		BuySellOperation first = new BuySellOperation();
+		Operation first = new Operation();
 
 		first.setId(1L);
-		first.setCoinId(CoinType.BITCOIN.getCode());
+		first.setCoinType(CoinType.BITCOIN);
 		first.setCoinQty(1.0);
 		first.setOperationCtv(5700.0);
 		first.setCoinPrice(5700.0);
 		first.setDate(LocalDate.now());
 		first.setOperationType(OperationType.BUY);
 
-		BuySellOperation second = new BuySellOperation();
+		Operation second = new Operation();
 
 		second.setId(2L);
-		second.setCoinId(CoinType.ETHEREUM.getCode());
+		second.setCoinType(CoinType.ETHEREUM);
 		second.setCoinQty(2.0);
 		second.setOperationCtv(600.0);
 		second.setCoinPrice(1200.0);
 		second.setDate(LocalDate.now());
 		second.setOperationType(OperationType.BUY);
 
-		buySellOperations.add(first);
-		buySellOperations.add(second);
+		operations.add(first);
+		operations.add(second);
 
-		return buySellOperations;
+		return operations;
 	}
 }
 

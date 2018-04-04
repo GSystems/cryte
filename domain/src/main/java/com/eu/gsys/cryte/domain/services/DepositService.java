@@ -1,6 +1,6 @@
 package com.eu.gsys.cryte.domain.services;
 
-import com.eu.gsys.cryte.domain.models.BuySellOperation;
+import com.eu.gsys.cryte.domain.models.Operation;
 import com.eu.gsys.cryte.domain.models.Client;
 import com.eu.gsys.cryte.domain.models.GenericDeposit;
 
@@ -11,5 +11,5 @@ public interface DepositService {
 	GenericDeposit getDepositById(Integer id);
 	void deleteDeposit(Integer id);
 
-	GenericDeposit updateDeposit(Client client, BuySellOperation buySellOperation);
+	GenericDeposit updateDeposit(Client client, Operation operation);
 }
