@@ -1,32 +1,53 @@
 package com.eu.gsys.cryte.domain.models;
 
-import java.util.Map;
+import org.springframework.data.util.Pair;
+
 import java.util.Objects;
 
 public class CryptoDeposit extends GenericDeposit {
 
-	private Map<Double, Double> pricePerCryptoQty;
+	private Pair<Double, Double> pricePerCryptoQty;
+	private Double profitCtv;
+	private Double pricePerCoin;
 
-	public Map<Double, Double> getPricePerCryptoQty() {
+	public Pair<Double, Double> getPricePerCryptoQty() {
 		return pricePerCryptoQty;
 	}
 
-	public void setPricePerCryptoQty(Map<Double, Double> pricePerCryptoQty) {
+	public void setPricePerCryptoQty(Pair<Double, Double> pricePerCryptoQty) {
 		this.pricePerCryptoQty = pricePerCryptoQty;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		if (!super.equals(o)) return false;
-		CryptoDeposit that = (CryptoDeposit) o;
-		return Objects.equals(pricePerCryptoQty, that.pricePerCryptoQty);
+	public Double getProfitCtv() {
+		return profitCtv;
 	}
 
-	@Override
-	public int hashCode() {
+	public void setProfitCtv(Double profitCtv) {
+		this.profitCtv = profitCtv;
+	}
 
-		return Objects.hash(super.hashCode(), pricePerCryptoQty);
+	public Double getPricePerCoin() {
+		return pricePerCoin;
+	}
+
+	public void setPricePerCoin(Double pricePerCoin) {
+		this.pricePerCoin = pricePerCoin;
+	}
+
+	@Override public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		if (!super.equals(o))
+			return false;
+		CryptoDeposit that = (CryptoDeposit) o;
+		return Objects.equals(pricePerCryptoQty, that.pricePerCryptoQty) && Objects.equals(profitCtv, that.profitCtv)
+				&& Objects.equals(pricePerCoin, that.pricePerCoin);
+	}
+
+	@Override public int hashCode() {
+
+		return Objects.hash(super.hashCode(), pricePerCryptoQty, profitCtv, pricePerCoin);
 	}
 }

@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.springframework.data.util.Pair;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDate;
@@ -40,12 +41,9 @@ public class DepositServiceTest {
 
         expectedDeposit.setCoinType(CoinType.ETHEREUM);
         expectedDeposit.setId(2);
-        expectedDeposit.setPricePerCryptoQty(new HashMap<>());
 
-        Map<Double, Double> pricePerCryptoQty = new HashMap<>();
-        pricePerCryptoQty.put(50.0, 1.0);
-
-        expectedDeposit.setPricePerCryptoQty(pricePerCryptoQty);
+        Pair<Double, Double> cryptoQtyAtPrice = Pair.of(1.0, 50.0);
+        expectedDeposit.setPricePerCryptoQty(cryptoQtyAtPrice);
 
         GenericDeposit actualDeposit = depositServiceMock.updateDeposit(client, operations.get(2));
 
@@ -57,16 +55,16 @@ public class DepositServiceTest {
         CryptoDeposit expectedDeposit = new CryptoDeposit();
 
         expectedDeposit.setCoinType(CoinType.ETHEREUM);
-        expectedDeposit.setId(10);
+        expectedDeposit.setId(2);
 
-        expectedDeposit.setPricePerCryptoQty(new HashMap<>());
+        Pair<Double, Double> cryptoQtyAtPrice = Pair.of(1.0, 50.0);
+        expectedDeposit.setPricePerCryptoQty(cryptoQtyAtPrice);
+        expectedDeposit.setProfitCtv();
+        expectedDeposit.setPricePerCoin();
 
-        Map<Double, Double> pricePerCryptoQty = new HashMap<>();
-        pricePerCryptoQty.put(50.0, 1.0);
+        depositServiceMock.updateDeposit(client, operations.get(2));
 
-        expectedDeposit.setPricePerCryptoQty(pricePerCryptoQty);
-
-        GenericDeposit actualDeposit = depositServiceMock.updateDeposit(client, operations.get(2));
+        GenericDeposit actualDeposit = actualDeposit = depositServiceMock.updateDeposit(client, operations.get(3));
 
         assertEquals(expectedDeposit, actualDeposit);
     }
@@ -102,7 +100,6 @@ public class DepositServiceTest {
 
         cryptoDeposit1.setCoinType(CoinType.ETHEREUM);
         cryptoDeposit1.setId(2);
-//        cryptoDeposit1.setPricePerCryptoQty(new HashMap<>());
 
         depositMap.put(cryptoDeposit1.getCoinType(), cryptoDeposit1);
 

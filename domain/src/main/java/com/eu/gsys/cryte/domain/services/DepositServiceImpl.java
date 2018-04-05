@@ -6,10 +6,8 @@ import com.eu.gsys.cryte.domain.util.CoinType;
 import com.eu.gsys.cryte.domain.util.OperationType;
 import com.eu.gsys.infrastructure.repositories.DepositRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class DepositServiceImpl implements DepositService {
@@ -65,72 +63,80 @@ public class DepositServiceImpl implements DepositService {
 
 	private CryptoDeposit updateCryptoDeposit(Client client, Operation operation) {
 
-		CryptoDeposit deposit = (CryptoDeposit) client.getDeposits().get(operation.getCoinType());
-		Map<Double, Double> pricePerCryptoQtyMap = new HashMap<>();
-
-		if (deposit.getPricePerCryptoQty() != null) {
-			pricePerCryptoQtyMap = deposit.getPricePerCryptoQty();
-		}
-
 		Double coinPrice = operation.getCoinPrice();
-		Double coinQty = operation.getCoinQty();
+		Double newCoinQty = operation.getCoinQty();
 		Double qtyForSave = 0.0;
 
-		qtyForSave = calculateQtyForSave(operation, pricePerCryptoQtyMap, coinPrice, coinQty);
+		CryptoDeposit deposit = (CryptoDeposit) client.getDeposits().get(operation.getCoinType());
 
-		if (qtyForSave > 0.0) {
-			pricePerCryptoQtyMap.put(coinPrice, qtyForSave);
-		} else {
-			pricePerCryptoQtyMap.remove(coinPrice);
+		Double oldProfit = deposit.getProfitCtv();
+		Double oldPricePerCoin = deposit.getPricePerCoin();
+
+		Pair<Double, Double> newCryptoQtyAtPrice;
+		Pair<Double, Double> oldCryptoQtyAtPrice = Pair.of(0.0, 0.0);
+
+		if (deposit.getPricePerCryptoQty() != null) {
+			oldCryptoQtyAtPrice = deposit.getPricePerCryptoQty();
 		}
 
-		deposit.setPricePerCryptoQty(pricePerCryptoQtyMap);
+		newCryptoQtyAtPrice = calculateQtyAndPriceForSave(oldCryptoQtyAtPrice, operation);
+
+		if (newCryptoQtyAtPrice.getSecond() < 0) {
+			newCryptoQtyAtPrice = Pair.of(newCryptoQtyAtPrice.getFirst(), 0.0);
+		}
+
+		deposit.setPricePerCryptoQty(newCryptoQtyAtPrice);
+
+		Pair<Double, Double> profitAndNewPricePerCoin = calculateProfitAndNewPricePerCoin(deposit);
+
+		deposit.setProfitCtv(profitAndNewPricePerCoin.getFirst());
+		deposit.setPricePerCoin(profitAndNewPricePerCoin.getSecond());
 
 		return deposit;
 	}
 
-	private Double calculateQtyForSave(Operation operation, Map<Double, Double> pricePerCryptoQtyMap, Double coinPrice, Double coinQty) {
+	private Pair<Double, Double> calculateQtyAndPriceForSave(Pair<Double, Double> cryptoQtyAtPrice, Operation operation) {
+		Pair<Double, Double> newCryptoQtyAtPrice;
+
 		Double qtyForSave = 0.0;
+		Double oldQty = cryptoQtyAtPrice.getFirst();
+		Double newQty = operation.getCoinQty();
+
+		Double priceForSave = 0.0;
+		Double oldPrice = cryptoQtyAtPrice.getSecond();
+		Double newPrice = operation.getCoinPrice();
 
 		if (OperationType.BUY.equals(operation.getOperationType())) {
-			qtyForSave = updateCryptoDepositForBuy(pricePerCryptoQtyMap, coinPrice, coinQty);
+			qtyForSave = oldQty + newQty;
+			priceForSave = oldPrice + newPrice;
 		} else if (OperationType.SELL.equals(operation.getOperationType())) {
-			qtyForSave = updateCryptoDepositForSell(pricePerCryptoQtyMap, coinPrice, coinQty);
+			qtyForSave = oldQty - newQty;
+			priceForSave = oldPrice - newPrice;
 		}
 
-		return qtyForSave;
+		newCryptoQtyAtPrice = Pair.of(qtyForSave, priceForSave);
+
+		return newCryptoQtyAtPrice;
 	}
 
-	private Double updateCryptoDepositForBuy(Map<Double, Double> pricePerCryptoQtyMap, Double coinPrice, Double coinQty) {
-		Double qtyForSave = 0.0;
-		Double oldQty = searchForOldQty(pricePerCryptoQtyMap, coinPrice);
+	private Pair<Double, Double> calculateProfitAndNewPricePerCoin(CryptoDeposit deposit) {
+		Pair<Double, Double> profitAndPricePerCoin;
 
-		qtyForSave = oldQty + coinQty;
+		Double newProfit = deposit.getProfitCtv();
+		Double newPricePerCoin = 0.0;
+		Double actualQty = deposit.getPricePerCryptoQty().getFirst();
+		Double actualPrice = deposit.getPricePerCryptoQty().getSecond();
 
-		return qtyForSave;
-	}
-
-	private Double updateCryptoDepositForSell(Map<Double, Double> pricePerCryptoQtyMap, Double coinPrice,
-			Double coinQty) {
-
-		Double qtyForSave = 0.0;
-		Double oldQty = searchForOldQty(pricePerCryptoQtyMap, coinPrice);
-		if (oldQty <= 0) {
-			qtyForSave = coinQty;
+		if (actualPrice < 0) {
+			newProfit += actualPrice;
 		} else {
-			qtyForSave = oldQty - coinQty;
+			newProfit -= actualPrice;
 		}
 
-		return qtyForSave;
-	}
+		newPricePerCoin = actualPrice / actualQty;
 
-	private Double searchForOldQty(Map<Double, Double> pricePerCryptoQtyMap, Double coinPrice) {
-		Double oldQty = 0.0;
+		profitAndPricePerCoin = Pair.of(newProfit, newPricePerCoin);
 
-		if (pricePerCryptoQtyMap.containsKey(coinPrice)) {
-			oldQty = pricePerCryptoQtyMap.get(coinPrice);
-		}
-
-		return oldQty;
+		return profitAndPricePerCoin;
 	}
 }
