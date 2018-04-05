@@ -37,36 +37,48 @@ public class DepositServiceTest {
 
     @Test
     public void updateCryptoDepositForBuyTest() {
-        CryptoDeposit expectedDeposit = new CryptoDeposit();
+        CryptoDeposit expectedDeposit1 = new CryptoDeposit();
+        CryptoDeposit expectedDeposit2 = new CryptoDeposit();
 
-        expectedDeposit.setCoinType(CoinType.ETHEREUM);
-        expectedDeposit.setId(2);
+        Pair<Double, Double> cryptoQtyAtPrice1 = Pair.of(0.5, 200.0);
+        expectedDeposit1.setCoinQtyAndTotalOpCtv(cryptoQtyAtPrice1);
+        expectedDeposit1.setCoinType(CoinType.ETHEREUM);
+        expectedDeposit1.setId(2);
+        expectedDeposit1.setProfitCtv(-200.0);
+        expectedDeposit1.setPricePerCoin(400.0);
 
-        Pair<Double, Double> cryptoQtyAtPrice = Pair.of(1.0, 50.0);
-        expectedDeposit.setPricePerCryptoQty(cryptoQtyAtPrice);
+        Pair<Double, Double> cryptoQtyAtPrice2 = Pair.of(2.5, 1200.0);
+        expectedDeposit2.setCoinQtyAndTotalOpCtv(cryptoQtyAtPrice2);
+        expectedDeposit2.setCoinType(CoinType.ETHEREUM);
+        expectedDeposit2.setId(2);
+        expectedDeposit2.setProfitCtv(-1200.0);
+        expectedDeposit2.setPricePerCoin(480.0);
 
-        GenericDeposit actualDeposit = depositServiceMock.updateDeposit(client, operations.get(2));
+        GenericDeposit actualDeposit = depositServiceMock.updateDeposit(client, operations.get(0));
+        assertEquals(expectedDeposit1, actualDeposit);
 
-        assertEquals(expectedDeposit, actualDeposit);
+        actualDeposit = depositServiceMock.updateDeposit(client, operations.get(1));
+        assertEquals(expectedDeposit2, actualDeposit);
     }
 
     @Test
     public void updateCryptoDepositForSellTest() {
-        CryptoDeposit expectedDeposit = new CryptoDeposit();
+        CryptoDeposit expectedDeposit1 = new CryptoDeposit();
 
-        expectedDeposit.setCoinType(CoinType.ETHEREUM);
-        expectedDeposit.setId(2);
+        expectedDeposit1.setCoinType(CoinType.ETHEREUM);
+        expectedDeposit1.setId(2);
 
-        Pair<Double, Double> cryptoQtyAtPrice = Pair.of(1.0, 50.0);
-        expectedDeposit.setPricePerCryptoQty(cryptoQtyAtPrice);
-        expectedDeposit.setProfitCtv();
-        expectedDeposit.setPricePerCoin();
+        Pair<Double, Double> cryptoQtyAtPrice = Pair.of(1.0, 0.0);
+        expectedDeposit1.setCoinQtyAndTotalOpCtv(cryptoQtyAtPrice);
+        expectedDeposit1.setProfitCtv(300.0);
+        expectedDeposit1.setPricePerCoin(0.0);
 
-        depositServiceMock.updateDeposit(client, operations.get(2));
+        depositServiceMock.updateDeposit(client, operations.get(0));
+        depositServiceMock.updateDeposit(client, operations.get(1));
 
-        GenericDeposit actualDeposit = actualDeposit = depositServiceMock.updateDeposit(client, operations.get(3));
+        GenericDeposit actualDeposit = depositServiceMock.updateDeposit(client, operations.get(2));
 
-        assertEquals(expectedDeposit, actualDeposit);
+        assertEquals(expectedDeposit1, actualDeposit);
     }
 
 
@@ -100,6 +112,8 @@ public class DepositServiceTest {
 
         cryptoDeposit1.setCoinType(CoinType.ETHEREUM);
         cryptoDeposit1.setId(2);
+        cryptoDeposit1.setPricePerCoin(0.0);
+        cryptoDeposit1.setProfitCtv(0.0);
 
         depositMap.put(cryptoDeposit1.getCoinType(), cryptoDeposit1);
 
@@ -114,44 +128,44 @@ public class DepositServiceTest {
         Operation operation3 = new Operation();
 
         operation0.setCoinType(CoinType.ETHEREUM);
-        operation0.setCoinQty(0.65);
+        operation0.setCoinQty(0.5);
         operation0.setDate(LocalDate.now());
-        operation0.setId(1L);
-        operation0.setOperationCtv(208.95);
+        operation0.setId(1);
+        operation0.setOperationCtv(200.0);
         operation0.setOperationType(OperationType.BUY);
-        operation0.setFeeCtv(0.54);
-        operation0.setCoinPrice(321.46);
-        operation0.setMinimumWithdrawalCoinPrice(323.13);
+        operation0.setFeeCtv(0.52);
+        operation0.setCoinPrice(400.0);
+        operation0.setMinimumWithdrawalCoinPrice(401.04);
 
-        operation1.setCoinType(CoinType.BITCOIN);
-        operation1.setCoinQty(0.035);
+        operation1.setCoinType(CoinType.ETHEREUM);
+        operation1.setCoinQty(2.0);
         operation1.setDate(LocalDate.now());
-        operation1.setId(2L);
-        operation1.setOperationCtv(199.88);
+        operation1.setId(10);
+        operation1.setOperationCtv(1000.0);
         operation1.setOperationType(OperationType.BUY);
-        operation1.setFeeCtv(0.51);
-        operation1.setCoinPrice(5710.86);
-        operation1.setMinimumWithdrawalCoinPrice(5739.99);
+        operation1.setFeeCtv(2.6);
+        operation1.setCoinPrice(500.0);
+        operation1.setMinimumWithdrawalCoinPrice(505.2);
 
         operation2.setCoinType(CoinType.ETHEREUM);
-        operation2.setCoinQty(1.0);
+        operation2.setCoinQty(1.5);
         operation2.setDate(LocalDate.now());
-        operation2.setId(3L);
-        operation2.setOperationCtv(50.00);
-        operation2.setOperationType(OperationType.BUY);
-        operation2.setFeeCtv(0.2);
-        operation2.setCoinPrice(50.0);
+        operation2.setId(3);
+        operation2.setOperationCtv(1500.0);
+        operation2.setOperationType(OperationType.SELL);
+        operation2.setFeeCtv(3.9);
+        operation2.setCoinPrice(700.0);
         operation2.setMinimumWithdrawalCoinPrice(0.0);
 
         operation3.setCoinType(CoinType.ETHEREUM);
         operation3.setCoinQty(1.0);
         operation3.setDate(LocalDate.now());
-        operation3.setId(3L);
-        operation3.setOperationCtv(75.00);
+        operation3.setId(4);
+        operation3.setOperationCtv(75.0);
         operation3.setOperationType(OperationType.SELL);
-        operation3.setFeeCtv(0.54);
-        operation3.setCoinPrice(321.46);
-        operation3.setMinimumWithdrawalCoinPrice(323.13);
+        operation3.setFeeCtv(0.19);
+        operation3.setCoinPrice(75.0);
+        operation3.setMinimumWithdrawalCoinPrice(0.0);
 
         operations.add(operation0);
         operations.add(operation1);

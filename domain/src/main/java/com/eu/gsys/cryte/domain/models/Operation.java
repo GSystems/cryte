@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class Operation {
 
-	private Long id;
+	private Integer id;
 	private CoinType coinType;
 	private Double coinPrice;
 	private Double coinQty;
@@ -21,11 +21,11 @@ public class Operation {
 	private Double currencyPrice;
 	private OperationType operationType;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

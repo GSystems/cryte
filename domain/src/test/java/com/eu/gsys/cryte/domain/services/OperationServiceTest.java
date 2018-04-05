@@ -88,21 +88,21 @@ public class OperationServiceTest {
 		operation0.setCoinType(CoinType.ETHEREUM);
 		operation0.setCoinQty(0.65);
 		operation0.setDate(LocalDate.now());
-		operation0.setId(1L);
+		operation0.setId(1);
 		operation0.setOperationCtv(208.95);
 		operation0.setOperationType(OperationType.BUY);
 
 		operation1.setCoinType(CoinType.BITCOIN);
 		operation1.setCoinQty(0.035);
 		operation1.setDate(LocalDate.now());
-		operation1.setId(2L);
+		operation1.setId(2);
 		operation1.setOperationCtv(199.88);
 		operation1.setOperationType(OperationType.BUY);
 
 		operation2.setCoinType(CoinType.ETHEREUM);
 		operation2.setCoinQty(1.0);
 		operation2.setDate(LocalDate.now());
-		operation2.setId(3L);
+		operation2.setId(3);
 		operation2.setOperationCtv(75.00);
 		operation2.setOperationType(OperationType.SELL);
 

@@ -51,6 +51,8 @@ public class DepositServiceImpl implements DepositService {
 			deposit = updateCryptoDeposit(client, operation);
 		}
 
+		client.getDeposits().replace(operation.getCoinType(), deposit);
+
 		return deposit;
 	}
 
@@ -63,31 +65,23 @@ public class DepositServiceImpl implements DepositService {
 
 	private CryptoDeposit updateCryptoDeposit(Client client, Operation operation) {
 
-		Double coinPrice = operation.getCoinPrice();
-		Double newCoinQty = operation.getCoinQty();
-		Double qtyForSave = 0.0;
-
+		Pair<Double, Double> coinQtyAndTotalOpCtv;
+		Pair<Double, Double> oldCryptoQtyAtPrice = Pair.of(0.0, 0.0);
 		CryptoDeposit deposit = (CryptoDeposit) client.getDeposits().get(operation.getCoinType());
 
-		Double oldProfit = deposit.getProfitCtv();
-		Double oldPricePerCoin = deposit.getPricePerCoin();
-
-		Pair<Double, Double> newCryptoQtyAtPrice;
-		Pair<Double, Double> oldCryptoQtyAtPrice = Pair.of(0.0, 0.0);
-
-		if (deposit.getPricePerCryptoQty() != null) {
-			oldCryptoQtyAtPrice = deposit.getPricePerCryptoQty();
+		if (deposit.getCoinQtyAndTotalOpCtv() != null) {
+			oldCryptoQtyAtPrice = deposit.getCoinQtyAndTotalOpCtv();
 		}
 
-		newCryptoQtyAtPrice = calculateQtyAndPriceForSave(oldCryptoQtyAtPrice, operation);
+		coinQtyAndTotalOpCtv = calculateQtyAndPriceForSave(oldCryptoQtyAtPrice, operation);
 
-		if (newCryptoQtyAtPrice.getSecond() < 0) {
-			newCryptoQtyAtPrice = Pair.of(newCryptoQtyAtPrice.getFirst(), 0.0);
+		if (coinQtyAndTotalOpCtv.getSecond() < 0) {
+			coinQtyAndTotalOpCtv = Pair.of(coinQtyAndTotalOpCtv.getFirst(), 0.0);
 		}
 
-		deposit.setPricePerCryptoQty(newCryptoQtyAtPrice);
+		deposit.setCoinQtyAndTotalOpCtv(coinQtyAndTotalOpCtv);
 
-		Pair<Double, Double> profitAndNewPricePerCoin = calculateProfitAndNewPricePerCoin(deposit);
+		Pair<Double, Double> profitAndNewPricePerCoin = calculateProfitAndNewPricePerCoin(operation, deposit);
 
 		deposit.setProfitCtv(profitAndNewPricePerCoin.getFirst());
 		deposit.setPricePerCoin(profitAndNewPricePerCoin.getSecond());
@@ -95,45 +89,51 @@ public class DepositServiceImpl implements DepositService {
 		return deposit;
 	}
 
-	private Pair<Double, Double> calculateQtyAndPriceForSave(Pair<Double, Double> cryptoQtyAtPrice, Operation operation) {
-		Pair<Double, Double> newCryptoQtyAtPrice;
+	private Pair<Double, Double> calculateQtyAndPriceForSave(Pair<Double, Double> coinQtyAndTotalOpCtv, Operation operation) {
+		Pair<Double, Double> newCoinQtyAndTotalOpCtv;
 
 		Double qtyForSave = 0.0;
-		Double oldQty = cryptoQtyAtPrice.getFirst();
+		Double oldQty = coinQtyAndTotalOpCtv.getFirst();
 		Double newQty = operation.getCoinQty();
 
-		Double priceForSave = 0.0;
-		Double oldPrice = cryptoQtyAtPrice.getSecond();
-		Double newPrice = operation.getCoinPrice();
+		Double oldTotalOperationsCtv = coinQtyAndTotalOpCtv.getSecond();
+		Double newPrice = operation.getOperationCtv();
+		Double totalOperationsCtvForSave = 0.0;
 
 		if (OperationType.BUY.equals(operation.getOperationType())) {
 			qtyForSave = oldQty + newQty;
-			priceForSave = oldPrice + newPrice;
+			totalOperationsCtvForSave = oldTotalOperationsCtv + newPrice;
 		} else if (OperationType.SELL.equals(operation.getOperationType())) {
 			qtyForSave = oldQty - newQty;
-			priceForSave = oldPrice - newPrice;
+			totalOperationsCtvForSave = oldTotalOperationsCtv - newPrice;
 		}
 
-		newCryptoQtyAtPrice = Pair.of(qtyForSave, priceForSave);
+		newCoinQtyAndTotalOpCtv = Pair.of(qtyForSave, totalOperationsCtvForSave);
 
-		return newCryptoQtyAtPrice;
+		return newCoinQtyAndTotalOpCtv;
 	}
 
-	private Pair<Double, Double> calculateProfitAndNewPricePerCoin(CryptoDeposit deposit) {
+	private Pair<Double, Double> calculateProfitAndNewPricePerCoin(Operation operation, CryptoDeposit deposit) {
+
+		Double newProfit = 0.0;
+		Double newPricePerCoin;
 		Pair<Double, Double> profitAndPricePerCoin;
 
-		Double newProfit = deposit.getProfitCtv();
-		Double newPricePerCoin = 0.0;
-		Double actualQty = deposit.getPricePerCryptoQty().getFirst();
-		Double actualPrice = deposit.getPricePerCryptoQty().getSecond();
+		Double oldProfit = deposit.getProfitCtv();
+		Double coinQty = deposit.getCoinQtyAndTotalOpCtv().getFirst();
+		Double totalOpCtv = deposit.getCoinQtyAndTotalOpCtv().getSecond();
 
-		if (actualPrice < 0) {
-			newProfit += actualPrice;
-		} else {
-			newProfit -= actualPrice;
+		if (OperationType.BUY.equals(operation.getOperationType())) {
+			newProfit = oldProfit - operation.getOperationCtv();
+		} else if (OperationType.SELL.equals(operation.getOperationType())) {
+			newProfit = oldProfit + operation.getOperationCtv();
 		}
 
-		newPricePerCoin = actualPrice / actualQty;
+		if (totalOpCtv == 0) {
+			newPricePerCoin = 0.0;
+		} else {
+			newPricePerCoin = totalOpCtv / coinQty;
+		}
 
 		profitAndPricePerCoin = Pair.of(newProfit, newPricePerCoin);
 

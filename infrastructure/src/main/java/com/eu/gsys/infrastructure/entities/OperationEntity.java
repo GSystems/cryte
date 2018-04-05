@@ -12,7 +12,7 @@ public class OperationEntity implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 	private String coinName;
 	private String coinId;
 	private Double coinPrice;
@@ -26,11 +26,11 @@ public class OperationEntity implements Serializable {
 	private Double currencyPrice;
 	private String operationType;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

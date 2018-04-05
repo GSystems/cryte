@@ -60,7 +60,7 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 
 		Operation first = new Operation();
 
-		first.setId(1L);
+		first.setId(1);
 		first.setCoinType(CoinType.BITCOIN);
 		first.setCoinQty(1.0);
 		first.setOperationCtv(5700.0);
@@ -70,7 +70,7 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 
 		Operation second = new Operation();
 
-		second.setId(2L);
+		second.setId(2);
 		second.setCoinType(CoinType.ETHEREUM);
 		second.setCoinQty(2.0);
 		second.setOperationCtv(600.0);

@@ -6,16 +6,16 @@ import java.util.Objects;
 
 public class CryptoDeposit extends GenericDeposit {
 
-	private Pair<Double, Double> pricePerCryptoQty;
+	private Pair<Double, Double> coinQtyAndTotalOpCtv;
 	private Double profitCtv;
 	private Double pricePerCoin;
 
-	public Pair<Double, Double> getPricePerCryptoQty() {
-		return pricePerCryptoQty;
+	public Pair<Double, Double> getCoinQtyAndTotalOpCtv() {
+		return coinQtyAndTotalOpCtv;
 	}
 
-	public void setPricePerCryptoQty(Pair<Double, Double> pricePerCryptoQty) {
-		this.pricePerCryptoQty = pricePerCryptoQty;
+	public void setCoinQtyAndTotalOpCtv(Pair<Double, Double> coinQtyAndTotalOpCtv) {
+		this.coinQtyAndTotalOpCtv = coinQtyAndTotalOpCtv;
 	}
 
 	public Double getProfitCtv() {
@@ -34,20 +34,20 @@ public class CryptoDeposit extends GenericDeposit {
 		this.pricePerCoin = pricePerCoin;
 	}
 
-	@Override public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		if (!super.equals(o))
-			return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 		CryptoDeposit that = (CryptoDeposit) o;
-		return Objects.equals(pricePerCryptoQty, that.pricePerCryptoQty) && Objects.equals(profitCtv, that.profitCtv)
-				&& Objects.equals(pricePerCoin, that.pricePerCoin);
+		return Objects.equals(coinQtyAndTotalOpCtv, that.coinQtyAndTotalOpCtv) &&
+				Objects.equals(profitCtv, that.profitCtv) &&
+				Objects.equals(pricePerCoin, that.pricePerCoin);
 	}
 
-	@Override public int hashCode() {
+	@Override
+	public int hashCode() {
 
-		return Objects.hash(super.hashCode(), pricePerCryptoQty, profitCtv, pricePerCoin);
+		return Objects.hash(super.hashCode(), coinQtyAndTotalOpCtv, profitCtv, pricePerCoin);
 	}
 }
