@@ -81,7 +81,6 @@ public class DepositServiceTest {
         assertEquals(expectedDeposit1, actualDeposit);
     }
 
-
     private Client generateClient() {
         Client client = new Client();
 

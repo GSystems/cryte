@@ -1,11 +1,10 @@
 package com.eu.gsys.infrastructure.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class ClientEntity implements Serializable {
+public class ClientEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +16,7 @@ public class ClientEntity implements Serializable {
 	private Double profitCtv;
 
 	@OneToMany
-	private List<DepositEntity> deposits;
+	private List<GenericDeposit> deposits;
 
 	@OneToMany
 	private List<OperationEntity> operations;
@@ -70,11 +69,11 @@ public class ClientEntity implements Serializable {
 		this.profitCtv = profitCtv;
 	}
 
-	public List<DepositEntity> getDeposits() {
+	public List<GenericDeposit> getDeposits() {
 		return deposits;
 	}
 
-	public void setDeposits(List<DepositEntity> deposits) {
+	public void setDeposits(List<GenericDeposit> deposits) {
 		this.deposits = deposits;
 	}
 

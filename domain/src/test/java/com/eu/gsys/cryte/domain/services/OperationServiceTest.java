@@ -47,7 +47,6 @@ public class OperationServiceTest {
 		Operation operation1 = operationServiceMock.calculatePricesAndFee(rawBuySellOperations.get(1));
 		Operation operation2 = operationServiceMock.calculatePricesAndFee(rawBuySellOperations.get(2));
 
-
 		assertEquals(op0FeeCtv, operation0.getFeeCtv(), 0);
 		assertEquals(op0CoinPrice, operation0.getCoinPrice(), 0);
 		assertEquals(op0MinimumWithdrawalCoinPrice, operation0.getMinimumWithdrawalCoinPrice(), 0);

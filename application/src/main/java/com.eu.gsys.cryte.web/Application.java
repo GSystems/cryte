@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-@SpringBootApplication(scanBasePackages = {"com.eu.gsys.wma"})
+@SpringBootApplication(scanBasePackages = {"com.eu.gsys.cryte"})
 public class Application extends SpringBootServletInitializer {
 
 	@Override

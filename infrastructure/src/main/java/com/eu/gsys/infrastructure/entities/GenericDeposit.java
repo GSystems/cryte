@@ -1,13 +1,10 @@
 package com.eu.gsys.infrastructure.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
-public class DepositEntity implements Serializable{
+@MappedSuperclass
+public class GenericDeposit implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
