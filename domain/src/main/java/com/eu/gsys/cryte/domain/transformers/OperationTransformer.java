@@ -3,12 +3,22 @@ package com.eu.gsys.cryte.domain.transformers;
 import com.eu.gsys.cryte.domain.models.Operation;
 import com.eu.gsys.cryte.domain.util.CoinType;
 import com.eu.gsys.cryte.domain.util.OperationType;
-import com.eu.gsys.infrastructure.entities.OperationEntity;
+import com.eu.gsys.cryte.infrastructure.entities.OperationEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OperationTransformer {
+
+	public static List<OperationEntity> fromOperationListToEntity(List<Operation> operations) {
+		List<OperationEntity> operationEntities = new ArrayList<>();
+
+		for (Operation operation : operations) {
+			operationEntities.add(fromOperationToEntity(operation));
+		}
+
+		return operationEntities;
+	}
 
 	public static OperationEntity fromOperationToEntity(Operation operation) {
 		OperationEntity operationEntity = new OperationEntity();
@@ -23,7 +33,7 @@ public class OperationTransformer {
 		operationEntity.setMinimumWithdrawalCoinPrice(operation.getMinimumWithdrawalCoinPrice());
 		operationEntity.setOperationCtv(operation.getOperationCtv());
 		operationEntity.setCoinPrice(operation.getCoinPrice());
-		operationEntity.setOperationType(operation.getOperationType().getCode());
+		operationEntity.setOperationType(operation.getOperationType().name());
 
 		return operationEntity;
 	}

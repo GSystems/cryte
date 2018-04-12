@@ -1,4 +1,4 @@
-package com.eu.gsys.infrastructure.config;
+package com.eu.gsys.cryte.infrastructure.config;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

@@ -7,7 +7,7 @@ import com.eu.gsys.cryte.domain.transformers.OperationTransformer;
 import com.eu.gsys.cryte.domain.util.FeePercEnum;
 import com.eu.gsys.cryte.domain.util.GeneralConstants;
 import com.eu.gsys.cryte.domain.util.OperationType;
-import com.eu.gsys.infrastructure.repositories.OperationRepository;
+import com.eu.gsys.cryte.infrastructure.repositories.OperationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +17,13 @@ import java.text.ParseException;
 @Service
 public class OperationServiceImpl implements OperationService {
 
-    private DepositService depositService;
+//    private DepositService depositService;
     private OperationRepository operationRepository;
 
-    @Autowired
-    public void setDepositService(DepositService depositService) {
-        this.depositService = depositService;
-    }
+//    @Autowired
+//    public void setDepositService(DepositService depositService) {
+//        this.depositService = depositService;
+//    }
 
     @Autowired
     public void setOperationRepository(OperationRepository operationRepository) {
@@ -84,7 +84,8 @@ public class OperationServiceImpl implements OperationService {
     protected Client processOperation(Client client, Operation operation) {
         Client updatedClient = client;
 
-        GenericDeposit genericDeposit = depositService.updateDeposit(client, operation);
+        GenericDeposit genericDeposit = new GenericDeposit();
+//                depositService.updateDeposit(client, operation);
         client.getDeposits().replace(genericDeposit.getCoinType(), genericDeposit);
 
         Double totalFeesCtv = calculateTotalFeeCtv(client, operation);

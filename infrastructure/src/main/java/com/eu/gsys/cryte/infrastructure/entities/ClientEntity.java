@@ -1,4 +1,4 @@
-package com.eu.gsys.infrastructure.entities;
+package com.eu.gsys.cryte.infrastructure.entities;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,10 +15,13 @@ public class ClientEntity {
 	private Double payedFeesCtv;
 	private Double profitCtv;
 
-	@OneToMany
-	private List<GenericDeposit> deposits;
+	@OneToMany(cascade = CascadeType.PERSIST)
+	private List<CryptoDepositEntity> cryptoDeposits;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.PERSIST)
+	private List<CurrencyDepositEntity> currencyDeposits;
+
+	@OneToMany(cascade = CascadeType.PERSIST)
 	private List<OperationEntity> operations;
 
 	public Integer getId() {
@@ -69,12 +72,20 @@ public class ClientEntity {
 		this.profitCtv = profitCtv;
 	}
 
-	public List<GenericDeposit> getDeposits() {
-		return deposits;
+	public List<CryptoDepositEntity> getCryptoDeposits() {
+		return cryptoDeposits;
 	}
 
-	public void setDeposits(List<GenericDeposit> deposits) {
-		this.deposits = deposits;
+	public void setCryptoDeposits(List<CryptoDepositEntity> cryptoDeposits) {
+		this.cryptoDeposits = cryptoDeposits;
+	}
+
+	public List<CurrencyDepositEntity> getCurrencyDeposits() {
+		return currencyDeposits;
+	}
+
+	public void setCurrencyDeposits(List<CurrencyDepositEntity> currencyDeposits) {
+		this.currencyDeposits = currencyDeposits;
 	}
 
 	public List<OperationEntity> getOperations() {

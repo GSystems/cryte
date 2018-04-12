@@ -3,7 +3,8 @@ package com.eu.gsys.cryte.domain.util;
 public enum OperationType {
 
 	BUY("B"),
-	SELL("S");
+	SELL("S"),
+	FUND("F");
 
 	private String code;
 

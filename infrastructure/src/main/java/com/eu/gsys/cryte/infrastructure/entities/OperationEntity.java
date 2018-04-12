@@ -1,4 +1,4 @@
-package com.eu.gsys.infrastructure.entities;
+package com.eu.gsys.cryte.infrastructure.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

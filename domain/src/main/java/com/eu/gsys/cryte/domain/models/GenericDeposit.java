@@ -27,16 +27,16 @@ public class GenericDeposit {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		GenericDeposit that = (GenericDeposit) o;
-		return Objects.equals(id, that.id) &&
-				coinType == that.coinType;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		GenericDeposit deposit = (GenericDeposit) o;
+		return Objects.equals(id, deposit.id) && coinType == deposit.coinType;
 	}
 
 	@Override
 	public int hashCode() {
-
 		return Objects.hash(id, coinType);
 	}
 }

@@ -1,6 +1,6 @@
-package com.eu.gsys.infrastructure.repositories;
+package com.eu.gsys.cryte.infrastructure.repositories;
 
-import com.eu.gsys.infrastructure.entities.ClientEntity;
+import com.eu.gsys.cryte.infrastructure.entities.ClientEntity;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ClientRepository extends CrudRepository<ClientEntity, Integer> {

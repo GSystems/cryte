@@ -4,7 +4,7 @@ import com.eu.gsys.cryte.domain.models.*;
 import com.eu.gsys.cryte.domain.transformers.DepositTransformer;
 import com.eu.gsys.cryte.domain.util.CoinType;
 import com.eu.gsys.cryte.domain.util.OperationType;
-import com.eu.gsys.infrastructure.repositories.DepositRepository;
+import com.eu.gsys.cryte.infrastructure.repositories.DepositRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class DepositServiceImpl implements DepositService {
 	@Override
 	public GenericDeposit saveDeposit(GenericDeposit deposit) {
 		return DepositTransformer
-				.toDepositFromEntity(depositRepository.save(DepositTransformer.fromDepositToEntity(deposit)));
+				.toGenericDepositFromEntity(depositRepository.save(DepositTransformer.fromGenericDepositToCryptoCurrencyEntity(deposit)));
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class DepositServiceImpl implements DepositService {
 
 	@Override
 	public GenericDeposit getDepositById(Integer id) {
-		return DepositTransformer.toDepositFromEntity(depositRepository.findById(id).get());
+		return DepositTransformer.toGenericDepositFromEntity(depositRepository.findById(id).get());
 	}
 
 	@Override

@@ -1,9 +1,9 @@
-package com.eu.gsys.infrastructure.entities;
+package com.eu.gsys.cryte.infrastructure.entities;
 
 import javax.persistence.Entity;
 
 @Entity
-public class CurrencyGenericDeposit extends GenericDeposit {
+public class CurrencyDepositEntity extends GenericDepositEntity {
 
     private Double balance;
 

@@ -1,10 +1,17 @@
 package com.eu.gsys.cryte.domain.transformers;
 
 import com.eu.gsys.cryte.domain.models.Client;
-import com.eu.gsys.infrastructure.entities.ClientEntity;
+import com.eu.gsys.cryte.domain.models.GenericDeposit;
+import com.eu.gsys.cryte.domain.util.CoinType;
+import com.eu.gsys.cryte.infrastructure.entities.ClientEntity;
+import com.eu.gsys.cryte.infrastructure.entities.CryptoDepositEntity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.eu.gsys.cryte.domain.transformers.OperationTransformer.fromOperationListToEntity;
 
 public class ClientTransformer {
 
@@ -21,7 +28,16 @@ public class ClientTransformer {
 	public static Client toClientFromEntity(ClientEntity clientEntity) {
 		Client client = new Client();
 
-		client.setDeposits(DepositTransformer.fromDepositListToMap(clientEntity.getDeposits()));
+		Map<CoinType, GenericDeposit> deposits = new HashMap<>();
+
+		for (CryptoDepositEntity cryptoDepositEntity : clientEntity.getCryptoDeposits()) {
+			deposits.put(
+					CoinType.valueOf(cryptoDepositEntity.getCoinName()),
+					DepositTransformer.toDepositFromEntity(cryptoDepositEntity));
+		}
+
+		client.setDeposits(deposits);
+
 		client.setEmail(clientEntity.getEmail());
 		client.setFirstname(clientEntity.getFirstname());
 		client.setId(clientEntity.getId());
@@ -36,6 +52,20 @@ public class ClientTransformer {
 	public static ClientEntity fromClientToEntity(Client client) {
 		ClientEntity clientEntity = new ClientEntity();
 
+		List<GenericDeposit> deposits = new ArrayList<>(client.getDeposits().values());
+
+		clientEntity.setCryptoDeposits(DepositTransformer.fromGenericListToCryptoDepositEntity(deposits));
+		clientEntity.setCurrencyDeposits(DepositTransformer.fromGenericListToCurrencyDepositEntity(deposits));
+		clientEntity.setEmail(client.getEmail());
+		clientEntity.setFirstname(client.getFirstname());
+		clientEntity.setId(client.getId());
+		clientEntity.setLastname(client.getLastname());
+		clientEntity.setOperations(fromOperationListToEntity(client.getOperations()));
+		clientEntity.setPayedFeesCtv(client.getPayedFeesCtv());
+		clientEntity.setProfitCtv(client.getProfitCtv());
+
 		return clientEntity;
 	}
+
+
 }

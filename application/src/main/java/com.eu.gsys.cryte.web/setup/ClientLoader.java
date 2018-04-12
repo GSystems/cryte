@@ -31,7 +31,6 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		Client client = new Client();
 
-		client.setId(1);
 		client.setEmail("firstname@email.com");
 		client.setFirstname("Firstname");
 		client.setLastname("Lastname");
@@ -60,7 +59,6 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 
 		Operation first = new Operation();
 
-		first.setId(1);
 		first.setCoinType(CoinType.BITCOIN);
 		first.setCoinQty(1.0);
 		first.setOperationCtv(5700.0);
@@ -70,7 +68,6 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 
 		Operation second = new Operation();
 
-		second.setId(2);
 		second.setCoinType(CoinType.ETHEREUM);
 		second.setCoinQty(2.0);
 		second.setOperationCtv(600.0);
@@ -78,8 +75,17 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 		second.setDate(LocalDate.now());
 		second.setOperationType(OperationType.BUY);
 
+		Operation third = new Operation();
+
+		third.setCoinType(CoinType.EURO);
+		third.setCoinQty(100.0);
+		third.setDate(LocalDate.now());
+		third.setOperationType(OperationType.FUND);
+		third.setOperationCtv(100.0);
+
 		operations.add(first);
 		operations.add(second);
+//		operations.add(third);
 
 		return operations;
 	}

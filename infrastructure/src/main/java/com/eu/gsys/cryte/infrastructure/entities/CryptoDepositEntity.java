@@ -1,9 +1,9 @@
-package com.eu.gsys.infrastructure.entities;
+package com.eu.gsys.cryte.infrastructure.entities;
 
 import javax.persistence.Entity;
 
 @Entity
-public class CryptoGenericDeposit extends GenericDeposit {
+public class CryptoDepositEntity extends GenericDepositEntity {
 
     private Double coinQty;
     private Double totalOperationCtv;

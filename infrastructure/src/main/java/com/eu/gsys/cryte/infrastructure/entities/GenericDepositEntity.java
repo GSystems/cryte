@@ -1,10 +1,10 @@
-package com.eu.gsys.infrastructure.entities;
+package com.eu.gsys.cryte.infrastructure.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @MappedSuperclass
-public class GenericDeposit implements Serializable{
+public class GenericDepositEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
